@@ -15,11 +15,11 @@
 
 Примеры mock-интерфейса:
 
-![Страница логина](https://github.com/revkov/JAVA.SB2.TEST/blob/master/login.png?raw=true "Экран логина")
+![Страница логина](https://github.com/RedFraction/JAVA.SB2.TEST/blob/master/login.png?raw=true "Экран логина")
 
-![Главная страница](https://github.com/revkov/JAVA.SB2.TEST/blob/master/converter.png?raw=true "Основная форма")
+![Главная страница](https://github.com/RedFraction/JAVA.SB2.TEST/blob/master/converter.png?raw=true "Основная форма")
 
-![Страница истории](https://github.com/revkov/JAVA.SB2.TEST/blob/master/history.png?raw=true "История")
+![Страница истории](https://github.com/RedFraction/JAVA.SB2.TEST/blob/master/history.png?raw=true "История")
 
 
 
