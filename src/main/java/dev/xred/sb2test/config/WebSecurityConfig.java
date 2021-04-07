@@ -52,8 +52,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.and()
 					.exceptionHandling().accessDeniedHandler(accessDeniedHandler);
 
-		http.csrf().disable(); //TODO: Проверить необходим ли он для консоли H2DB
-		http.headers().frameOptions().disable(); //TODO: Проверить необходим ли он для консоли H2DB
+		http.csrf().disable();
+		http.headers().frameOptions().disable();
 	}
 
 	@Bean

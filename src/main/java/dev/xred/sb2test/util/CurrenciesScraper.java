@@ -1,7 +1,6 @@
 package dev.xred.sb2test.util;
 
 import dev.xred.sb2test.model.Currency;
-import dev.xred.sb2test.util.DateUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -72,14 +71,3 @@ public class CurrenciesScraper {
 
 
 }
-/**
-	<ValCurs Date="03.04.2021" name="Foreign Currency Market">
-		<Valute ID="R01035">
-			<NumCode>826</NumCode>
-			<CharCode>GBP</CharCode>
-			<Nominal>1</Nominal>
-			<Name>Фунт стерлингов Соединенного королевства</Name>
-			<Value>105,2856</Value>
-		</Valute>
-	</ValCurs>
- **/

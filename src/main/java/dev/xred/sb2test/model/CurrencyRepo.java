@@ -3,7 +3,6 @@ package dev.xred.sb2test.model;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 
 import java.util.Date;
 import java.util.List;
@@ -22,10 +21,7 @@ public interface CurrencyRepo extends JpaRepository<Currency, Integer> {
 
 	List<Currency> findAllByDate(Date date);
 
-	@Query(value = "SELECT curr_charcode FROM currencies_tbl", nativeQuery = true)
-	List<String> findAllChar();
-
-	Optional<Currency> findCurrencyByCharCodeOrderByDateDesc(String from);
+	Optional<Currency> getFirstByCharCodeOrderByDateDesc(String from);
 
 	@Override
 	<S extends Currency> List<S> saveAll(Iterable<S> entities);

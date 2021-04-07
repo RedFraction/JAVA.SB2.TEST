@@ -14,12 +14,15 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.text.DateFormat;
 import java.text.ParseException;
-import java.util.Optional;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api")
-public class AppAPI {
+public class API {
 
 	@Autowired
 	CurrencyRepo cr;
@@ -31,33 +34,24 @@ public class AppAPI {
 	private BigDecimal convert(
 			@RequestParam String from,
 			@RequestParam String to,
-			@RequestParam String sum ){
+			@RequestParam String sum
+	) throws ParserConfigurationException, SAXException, ParseException, IOException {
 
 		if (!cr.existsByDate(DateUtils.getCurrentDateWOTime())) {
-			try {
-				cr.saveAll(new CurrenciesScraper().scrap(DateUtils.getCurrentDateWOTime()));
-			} catch (IOException e) {
-				e.printStackTrace();
-			} catch (ParserConfigurationException e) {
-				e.printStackTrace();
-			} catch (SAXException e) {
-				e.printStackTrace();
-			} catch (ParseException e) {
-				e.printStackTrace();
-			}
+			cr.saveAll(new CurrenciesScraper().scrap(DateUtils.getCurrentDateWOTime()));
 			cr.save(Currency.getBase());
 		}
 
-		Currency curFrom = cr.findCurrencyByCharCodeOrderByDateDesc(from).get();
-		Currency curTo = cr.findCurrencyByCharCodeOrderByDateDesc(to).get();
+		Currency curFrom = cr.getFirstByCharCodeOrderByDateDesc(from).get();
+		Currency curTo = cr.getFirstByCharCodeOrderByDateDesc(to).get();
 
 		BigDecimal sumFrom = new BigDecimal(sum);
 
 		BigDecimal sumTo = CurrencyConverter.convert(sumFrom, curFrom, curTo);
 
 		ConvertHistory ch = new ConvertHistory();
-		ch.setFrom(curFrom.getCharCode() + "-" + curFrom.getName());
-		ch.setTo(curTo.getCharCode() + "-" + curTo.getName());
+		ch.setFrom(curFrom.getCharCode() + " (" + curFrom.getName() + ")");
+		ch.setTo(curTo.getCharCode() + " (" + curTo.getName() + ")");
 		ch.setValue_from(sumFrom);
 		ch.setValue_to(sumTo);
 		ch.setDate(DateUtils.getCurrentDateWOTime());
@@ -65,6 +59,20 @@ public class AppAPI {
 		hr.save(ch);
 
 		return sumTo;
+	}
+
+	@GetMapping("/history")
+	private List<ConvertHistory> history_post(
+			@RequestParam String date,
+			@RequestParam String from,
+			@RequestParam String to
+	) throws ParseException {
+
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		Date parsed_date = dateFormat.parse(date);
+
+		return hr.findAllByDateAndFromAndToOrderById(parsed_date, from, to);
+
 	}
 
 	@GetMapping("/drop-db")
