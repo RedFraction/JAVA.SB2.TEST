@@ -1,0 +1,72 @@
+package dev.xred.sb2test.config;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.web.access.AccessDeniedHandler;
+
+@Configuration
+@EnableWebSecurity
+public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+
+	@Autowired
+	private AccessDeniedHandler accessDeniedHandler;
+
+
+	@Override
+	protected void configure(HttpSecurity http) throws Exception {
+		http.httpBasic();
+		http
+			.authorizeRequests()
+				.antMatchers("/", "/*", "/js/**", "/error**", "/css/**", "/img/**")
+					.permitAll()
+				.antMatchers("/administrative/" , "/administrative/**" , "/administrative/**/**" , "/api/**" , "/api/**/**")
+					.hasRole("ADMIN")
+
+
+				.antMatchers("/administrative/h2-console/**")
+					.permitAll()
+
+
+				.anyRequest()
+					.authenticated()
+				.and()
+					.formLogin()
+					.loginPage("/login")
+					.defaultSuccessUrl("/app/")
+					.failureUrl("/login?error=true")
+					.permitAll()
+				.and()
+					.logout()
+					.logoutSuccessUrl("/")
+					.invalidateHttpSession(true)
+					.clearAuthentication(true)
+					.permitAll()
+				.and()
+					.exceptionHandling().accessDeniedHandler(accessDeniedHandler);
+
+		http.csrf().disable(); //TODO: Проверить необходим ли он для консоли H2DB
+		http.headers().frameOptions().disable(); //TODO: Проверить необходим ли он для консоли H2DB
+	}
+
+	@Bean
+	@Override
+	public UserDetailsService userDetailsService() {
+		UserDetails user =
+				User.withDefaultPasswordEncoder()
+						.username("admin")
+						.password("admin")
+						.roles("ADMIN", "USER")
+						.build();
+
+		return new InMemoryUserDetailsManager(user);
+	}
+
+}

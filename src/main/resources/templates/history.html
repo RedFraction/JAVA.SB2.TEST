@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<!--<head th:replace="parts/header :: head"/>-->
+<head>
+    <title>Конвертер валют</title>
+    <script src="https://use.fontawesome.com/releases/v5.0.13/js/all.js"></script>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+
+<!--<header th:replace="parts/landing-header :: header"/>-->
+<p><a href="/app"><i class="fas fa-arrow-left"></i> Назад в конвертер</a></p>
+<h1>История</h1>
+<!--<form>-->
+<!--    <input type="date"/>-->
+<!--    <select>-->
+<!--        <option th:each="code : ${charcodes}" th:value="${code}" th:value="${code}"></option>-->
+<!--    </select>-->
+<!--</form>-->
+<style>
+    table {
+        margin: 10px 0;
+        border-collapse: collapse;
+    }
+    table tr th{
+        background-color: #ccc;
+    }
+    table tr:nth-child(odd){
+        background-color: #eee;
+    }
+    table td {
+        padding: 8px;
+    }
+    table td,
+    table th {
+        border: 1px solid black;
+        padding: 5px;
+    }
+</style>
+<table>
+    <tr>
+        <th>Исходная валюта</th>
+        <th>Целевая валюта</th>
+        <th>Исходная сумма</th>
+        <th>Получаемая сумма</th>
+        <th>Дата</th>
+    </tr>
+
+<!--    private Long id;-->
+<!--    private String from;-->
+<!--    private String to;-->
+<!--    private BigDecimal value_from;-->
+<!--    private BigDecimal value_to;-->
+<!--    private Date date;-->
+
+    <tr th:each="h : ${history}" >
+        <td th:text="${h.getFrom()}" />
+        <td th:text="${h.getTo()}"/>
+        <td th:text="${h.getValue_from()}"/>
+        <td th:text="${h.getValue_to()}"/>
+        <td th:text="${h.getDate().getDate() + '-' + (h.getDate().getMonth() + 1) + '-' + (h.getDate().getYear() + 1900)}"></td>
+    </tr>
+</table>
+<button class="btn" type="submit"><i class="fas fa-search"></i> Поиск</button>
+<!--<footer th:replace="parts/footer :: footer"/>-->
+</body>
+</html>
