@@ -1,4 +1,4 @@
-## Used techs
+## Used tech stack
 - Spring Boot
 - Spring JPA
 - Hibernate
@@ -7,12 +7,13 @@
 - Maven
 - PostgreSQL 13
 
-## Подготовка к запуску / запуск
-- Configure [application.properties][1] под себя
+## Setup
+- Configure [application.properties][1]
 - Default credentials - admin : admin . You can setup for custom auth data by changing [WebSecurityConfig][2]
 
 [1]: https://github.com/RedFraction/JAVA.SB2.TEST/blob/master/src/main/resources/application.properties
 [2]: https://github.com/RedFraction/JAVA.SB2.TEST/blob/master/src/main/java/dev/xred/sb2test/config/WebSecurityConfig.java
+
 ## Задача
 **Задача: Сделать конвертер валют**
 
